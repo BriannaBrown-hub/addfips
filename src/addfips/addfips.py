@@ -30,6 +30,7 @@ COUNTY_PATTERN = r" (county|city|city and borough|borough|census area|municipio|
 DIACRETICS = {
     r"ñ": "n",
     r"'": "",
+    r".": "",
     r"ó": "o",
     r"í": "i",
     r"á": "a",
@@ -41,10 +42,11 @@ DIACRETICS = {
     r"ì": "i",
     r"å": "a",
 }
+
 ABBREVS = {
-    'ft. ': 'fort ',
-    'st. ': 'saint ',
-    'ste. ': 'sainte ',
+    'ft ': 'fort ',
+    'st ': 'saint ',
+    'ste ': 'sainte ',
 }
 
 
@@ -58,7 +60,7 @@ class AddFIPS:
 
     def __init__(self, vintage=None):
         # Handle de-diacreticizing
-        self.diacretic_pattern = '(' + ('|'.join(DIACRETICS)) + ')'
+        self.diacretic_pattern = '|'.join(re.escape(key) for key in DIACRETICS)
         self.delete_diacretics = lambda x: DIACRETICS[x.group()]
 
         if vintage is None or vintage not in COUNTY_FILES:
